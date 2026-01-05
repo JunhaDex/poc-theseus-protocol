@@ -8,7 +8,10 @@ services:
         APP_NAME: shell
     ports:
       - "3000:3000"
-    command: node apps/shell/server.js
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: pnpm turbo dev --filter=shell
   account:
     build:
       context: .
@@ -18,7 +21,10 @@ services:
         APP_NAME: account
     expose:
       - "3000"
-    command: node apps/account/server.js
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: pnpm turbo dev --filter=account
   contents:
     build:
       context: .
@@ -28,4 +34,7 @@ services:
         APP_NAME: contents
     expose:
       - "3000"
-    command: node apps/contents/server.js
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: pnpm turbo dev --filter=contents
