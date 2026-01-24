@@ -63,3 +63,6 @@ next-env.d.ts
 # Temporary files
 *.tmp
 *.temp
+
+# Local DB volumes
+database/data/*
