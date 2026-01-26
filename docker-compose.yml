@@ -8,7 +8,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - database/data/postgres:/var/lib/postgresql/data
+      - ./database/data/postgres:/var/lib/postgresql/data
   api:
     build:
       context: .
@@ -21,9 +21,9 @@ services:
     environment:
       DATABASE_URL: db://user:password@db:5432/service
     volumes:
-      - ./apps/api:/app
+      - .:/app
       - /app/node_modules
-    command: pnpm run dev
+    command: pnpm turbo dev --filter=api
     depends_on:
       - db
   shell:
@@ -35,7 +35,12 @@ services:
         APP_NAME: shell
     ports:
       - "3000:3000"
-    command: node apps/shell/server.js
+    environment:
+      - WATCHPACK_POLLING=true
+    command: pnpm turbo dev --filter=shell
+    volumes:
+      - .:/app
+      - /app/node_modules
     depends_on:
       - api
   account:
@@ -47,7 +52,12 @@ services:
         APP_NAME: account
     expose:
       - "3000"
-    command: node apps/account/server.js
+    environment:
+      - WATCHPACK_POLLING=true
+    command: pnpm turbo dev --filter=account
+    volumes:
+      - .:/app
+      - /app/node_modules
     depends_on:
       - api
   contents:
@@ -59,6 +69,11 @@ services:
         APP_NAME: contents
     expose:
       - "3000"
-    command: node apps/contents/server.js
+    environment:
+      - WATCHPACK_POLLING=true
+    command: pnpm turbo dev --filter=contents
+    volumes:
+      - .:/app
+      - /app/node_modules
     depends_on:
       - api
