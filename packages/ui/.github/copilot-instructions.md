@@ -20,9 +20,13 @@ The following files are **Auto-Generated** by Style Dictionary. **DO NOT EDIT MA
 3. **Bridge Layer**: `src/styles/_variables.scss` (Maps SCSS vars to CSS vars).
 
 ## 2. Component Implementation
-- **Framework**: React + Vite (Library Mode).
+- **Core Library**: **Radix UI Primitives** (`@radix-ui/react-[component]`).
+- **Architecture & API Design (Strict)**:
+    - **Compound Components**: Prefer building and exporting modular, compound components (e.g., `Root`, `Trigger`, `Content`) over monolithic wrappers to preserve Radix's compositional flexibility.
+    - **ForwardRefs**: ALWAYS use `React.forwardRef` to ensure refs are correctly passed down to the underlying Radix primitives or DOM elements.
 - **Styling Strategy**: **SCSS Modules** only.
-    - **FORBIDDEN**: `sx` prop, `styled()` API, inline `style={{...}}`.
+    - **Headless Rule**: Radix components have NO styles. You MUST implement all visual styles from scratch using SCSS Modules.
+    - **FORBIDDEN**: Inline `style={{...}}`, CSS-in-JS.
     - **REQUIRED**: Apply styles via `className` from the imported styles object.
 - **SCSS Syntax & Imports**:
     - **MUST** import variables at the top of every SCSS module:
@@ -30,7 +34,11 @@ The following files are **Auto-Generated** by Style Dictionary. **DO NOT EDIT MA
       @use '../../styles/variables' as *;
       ```
     - **MUST** use SCSS variables (`$sys-...`), NOT CSS variables (`var(--...)`) directly.
-- **MUI Integration**: Use `@mui/material` base components but override styles purely via CSS classes.
+- **State Styling (Radix Pattern)**:
+    - ALWAYS use Radix data attributes for styling interaction states in SCSS.
+    - Example: `&[data-state="open"] { ... }`, `&[data-disabled] { ... }`
+- **Component Composition**:
+    - Use the `asChild` prop and `@radix-ui/react-slot` when forwarding refs and merging classes to standard HTML elements.
 
 ## 3. Storybook
 - **Path**: `src/components/[Name]/[Name].stories.tsx`.

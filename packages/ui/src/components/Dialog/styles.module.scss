@@ -1,0 +1,142 @@
+@use '../../styles/variables' as *;
+
+// Overlay: 배경 딤 처리
+.overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+
+  // 상태별 스타일링 (data-state attribute)
+  &[data-state='open'] {
+    animation: fadeIn 200ms ease-out;
+  }
+
+  &[data-state='closed'] {
+    animation: fadeOut 200ms ease-in;
+  }
+}
+
+// Content: 실제 다이얼로그
+.content {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: $sys-color-bg-default;
+  border-radius: 8px;
+  padding: 24px;
+  width: 90vw;
+  max-width: 500px;
+  max-height: 85vh;
+  overflow-y: auto;
+  z-index: 1001;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+
+  // 상태별 애니메이션
+  &[data-state='open'] {
+    animation: scaleIn 200ms ease-out;
+  }
+
+  &[data-state='closed'] {
+    animation: scaleOut 200ms ease-in;
+  }
+
+  // 포커스 스타일 (키보드 내비게이션)
+  &:focus-visible {
+    outline: 2px solid $sys-color-primary-main;
+    outline-offset: 2px;
+  }
+}
+
+// Title
+.title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: $sys-color-text-primary;
+  line-height: 1.4;
+}
+
+// Description
+.description {
+  margin-top: 8px;
+  font-size: 14px;
+  color: $sys-color-text-primary;
+  opacity: 0.7;
+  line-height: 1.5;
+}
+
+// Body
+.body {
+  margin-top: 16px;
+}
+
+// Close Button
+.close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  color: $sys-color-text-primary;
+  cursor: pointer;
+  transition: background-color 150ms;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  &:focus-visible {
+    outline: 2px solid $sys-color-primary-main;
+    outline-offset: 2px;
+  }
+}
+
+// Animations
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes scaleOut {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.95);
+  }
+}
+
